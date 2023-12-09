@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KOSH | Terminal</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+    <style>
+      #liner::before, p.cmd::before {
+        color: #519975;
+        content: attr(data-user) attr(data-pwd) "$ ";
+      }
+    </style>
+  </head>
+  <body>
+    <div id="terminal">
+      <a id="before"></a>
+    </div>
+    <div id="command" onclick="$('texter').focus();">
+      <textarea
+        type="text"
+        id="texter"
+        onkeyup="typeIt(this, event)"
+        onkeydown="typeIt(this, event);moveIt(this.value.length, event)"
+        onkeypress="typeIt(this, event);"
+        autofocus
+      ></textarea>
+      <div id="liner" data-user="visitor@localhost:" data-pwd="~" data-cmd_p="$ ">
+        <span id="typer"></span><b class="cursor" id="cursor">█</b>
+      </div>
+    </div>
+    <script src="assets/js/caret.js"></script>
+    <script src="assets/js/func.js"></script>
+    <script src="assets/js/commands.js"></script>
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
