@@ -30,7 +30,9 @@
     }elseif ($cmd==="man") {
         $response["data"] = htmlentities($cmd) . ": command not found.";
     }elseif (isset($cmd_list[$cmd])) {
-        $response["data"] = $cmd_list[$cmd]->run();
+        $data= json_decode($cmd_list[$cmd]->run(),true);
+        $response["run"] = $data["run"];
+        $response["data"] = $data["data"];
     }else {
         $response["data"] = htmlentities($cmd) . ": command not found";
     }
