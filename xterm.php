@@ -1,6 +1,7 @@
 <?php
     require_once 'vendor/autoload.php';
     use CHH\Optparse;
+    header("Content-Type: text/javascript");
     spl_autoload_register(function ($class_name) {
         if (str_contains($class_name,"_cmd")) {
             include "cmd/".str_replace("_cmd","",$class_name) . '.php';
