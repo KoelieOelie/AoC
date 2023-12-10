@@ -2,7 +2,7 @@
 class banner_cmd extends base_cmd
 {
     public function __construct() {
-        $this->help = "Show the loging banner";
+        $this->help = "Display the header";
     }
     function run() : string {
         $banner = file_get_contents("AoC_files/banner.ans");
