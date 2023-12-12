@@ -18,7 +18,7 @@
     $argv = (!isset($_GET["argv"])) ? "" : html_entity_decode(base64_decode($_GET["argv"]), ENT_SUBSTITUTE);
     $cmd_list=array(
         "banner"=>new banner_cmd,
-        "help"=> "You obviously already know what this does"
+        "help"=> "WIP",
         "ls"=>new ls_cmd,
         "sl"=>new sl_cmd,
         "cowsay"=>new cowsay
