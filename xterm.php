@@ -37,4 +37,4 @@
     }else {
         $response["data"] = htmlentities($cmd) . ": command not found";
     }
-    echo "s0(".json_encode($response).");";
+    echo "s0(".json_encode($response,128).");";
