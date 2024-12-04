@@ -30,7 +30,6 @@
         "pwd" => $os->help("pwd"),
         //"sl"=>new sl_cmd,
         //"cowsay"=>new cowsay
-        //"pwd"=>new pwd_cmd()
     );
     if (strtolower($cmd)==="br") {
         $response["run"] = "br";
