@@ -4,11 +4,15 @@ function Hi() {
 }
 class os_cmd extends base_cmd
 {
+    protected $pwd;
     public function __construct()
     {
         $this->init_cli();
         //$this->cli->addFlag("help", array("alias" => "-h"));
         $this->help = "Display the files in current dir";
+    }
+    function setPWD($path) : void {
+        $this->pwd=$path;
     }
     /**
      * TODO: refactor hier onder
@@ -47,9 +51,7 @@ class os_cmd extends base_cmd
     }
     function runPWD()
     {
-        $out = $this->output("runPWD", true);
-        
-        return $out;
+        return $this->output($this->pwd);
     }
     
 
