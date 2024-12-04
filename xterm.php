@@ -13,18 +13,36 @@
         
     });
     $response =array("data"=>"","run"=> "addLine");
-    $cmd = (urlencode($_GET["cmd"])=== "%F0%9F%8E%85") ? "banner" : html_entity_decode($_GET["cmd"], ENT_SUBSTITUTE) ;
+    $cmd = (urlencode($_GET["cmd"])=== "%F0%9F%8E%85") ? "init" : html_entity_decode($_GET["cmd"], ENT_SUBSTITUTE) ;
     $argv = (!isset($_GET["argv"])) ? "[]" : html_entity_decode(base64_decode($_GET["argv"]), ENT_SUBSTITUTE);
+    $os=new os_cmd();
     $cmd_list=array(
         "banner"=>new banner_cmd,
         "help"=> "You obviously already know what this does",
-        "ls"=>new ls_cmd,
-        "sl"=>new sl_cmd,
+        "ls"=> $os->help("ls"),
+        "cd" => $os->help("cd"),
+        "mdir" => $os->help("mdir"),
+        "mfile" => $os->help("mfile"),
+        "pwd" => $os->help("pwd"),
+        //"sl"=>new sl_cmd,
         //"cowsay"=>new cowsay
         //"pwd"=>new pwd_cmd()
     );
     if (strtolower($cmd)==="br") {
         $response["run"] = "br";
+    }elseif ($cmd=== "init") {
+        $data = json_decode($cmd_list["banner"]->serve($argv, "banner"), true);
+        if (isset($data["run"])) {
+            $response["run"] = $data["run"];
+        }
+        $response["data"] = $data["data"];
+        $os->setPWD("/root");
+    }elseif ($cmd === "cd" || $cmd === "ls" || $cmd === "mdir"|| $cmd ==="mfile" || $cmd === "pwd") {
+        $data = json_decode($os->serve($argv, $cmd), true);
+        if (isset($data["run"])) {
+            $response["run"] = $data["run"];
+        }
+        $response["data"] = $data["data"];
     }elseif ($cmd==="help") {
         $data=array();
         foreach ($cmd_list as $key => $value) {
