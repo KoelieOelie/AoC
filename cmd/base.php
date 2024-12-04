@@ -1,12 +1,23 @@
 <?php
+
 class base_cmd
 {
     protected $help="No help found";
     protected $cli;
+    protected $params=true;
     protected function init_cli() {
         $this->cli = new OptionParser;
-        $this->cli->addHead($this->help);
+        $this->cli->addRule('help', "display this help and exit");
         
+    }
+    protected function fix_cmd(&$args,$cmd)
+    {
+        $args = json_decode($args, true);
+        $tmp=[$cmd];
+        foreach ($args as $old) {
+            $tmp[]= $old;
+        }
+        $args= $tmp;
     }
     /**
      * ## Adds a flag to the parser.
@@ -29,6 +40,18 @@ class base_cmd
 
         return $this;
     }
+    function output($msg,$loopL=false) : string {
+        if ($loopL) {
+            if (gettype($msg)!=="array") {
+                $msg=explode("\n", $msg);
+            }
+            return json_encode(["data" => $msg, "run" => "loopLines"]);
+        } else {
+            return json_encode(["data" => $msg]);
+            
+        }
+        
+    }
     public function __call($name, $arguments)
     {
         //echo $name;
@@ -36,7 +59,7 @@ class base_cmd
         //if (!isset($arguments[1])) {
         //    $arguments=[$name];
         //}
-        return json_encode(["data"=> "\x1b3".htmlentities($name) . ": command not found.\x1b0"]);
+        return $this->output("\x1b3" . htmlentities($name) . ": command not found.\x1b0");
         //echo  "/*Calling object method '$name' ". print_r($arguments,true) . "\n*/";
     }
     function cmd_fall($name) {
