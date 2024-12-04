@@ -23,7 +23,7 @@ class Charset
         if (!str_starts_with($ttemp, "//")) {
             $buffer[] = $ttemp;
         }
-        echo "/*". $filename."*/";
+        ////echo "/*". $filename."*/";
         //$this->about= array(str_replace("// ","",$tmp[0]), $tmp[1]);
         //$font=array();
         unset($buffer[0]);
@@ -45,17 +45,17 @@ class Charset
     }
 }
 
-class Playscii implements JsonSerializable 
+class Playscii //implements JsonSerializable 
 {
     private $data;
     private $charater_set = array();
     public function __construct($filename) {
-        foreach (glob("AoC_files/Playscii_Charsets/*.char") as $filename_chr) {
-           $this->charater_set[str_replace(array("AoC_files/Playscii_Charsets/",".char"),"", $filename_chr)]=new Charset($filename_chr);
+        foreach (glob("AoC_files/os_hidden/Playscii_Charsets/*.char") as $filename_chr) {
+           $this->charater_set[str_replace(array("AoC_files/os_hidden/Playscii_Charsets/",".char"),"", $filename_chr)]=new Charset($filename_chr);
         }
         $this->data = json_decode(file_get_contents($filename),true);
     }
-    public function jsonSerialize()
+    /*public function jsonSerialize()
     {
         $x=0;
         $y = "";
@@ -76,6 +76,6 @@ class Playscii implements JsonSerializable
             
         }
         return $out;
-    }
+    }*/
     
 }
