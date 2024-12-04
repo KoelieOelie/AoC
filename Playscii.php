@@ -45,7 +45,7 @@ class Charset
     }
 }
 
-class Playscii //implements JsonSerializable 
+class Playscii implements JsonSerializable 
 {
     private $data;
     private $charater_set = array();
@@ -55,13 +55,13 @@ class Playscii //implements JsonSerializable
         }
         $this->data = json_decode(file_get_contents($filename),true);
     }
-    /*public function jsonSerialize()
+    public function jsonSerialize(): array 
     {
         $x=0;
         $y = "";
         $out=array();
         $charset= $this->charater_set[$this->data["charset"]];
-        $out[]= $charset;
+        //$out[]= $charset;
         foreach ($this->data["frames"][0]["layers"][0]["tiles"] as $cell) {
             $y .= $charset->getCharFromIndex($cell["char"]);
             //$y.= $cell["char"];
@@ -76,6 +76,6 @@ class Playscii //implements JsonSerializable
             
         }
         return $out;
-    }*/
+    }
     
 }
