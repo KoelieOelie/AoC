@@ -15,7 +15,11 @@
     $response =array("data"=>"","run"=> "addLine");
     $cmd = (urlencode($_GET["cmd"])=== "%F0%9F%8E%85") ? "init" : html_entity_decode($_GET["cmd"], ENT_SUBSTITUTE) ;
     $argv = (!isset($_GET["argv"])) ? "[]" : html_entity_decode(base64_decode($_GET["argv"]), ENT_SUBSTITUTE);
-    $os=new os_cmd();
+    if (isset($_SESSION["os"])) {
+        $os = unserialize($_SESSION["os"]);
+    }else {
+        $os = new os_cmd();
+    }
     $cmd_list=array(
         "banner"=>new banner_cmd,
         "help"=> "You obviously already know what this does",
@@ -36,12 +40,15 @@
             $response["run"] = $data["run"];
         }
         $response["data"] = $data["data"];
+        echo "//setPWD:/root\n";
+        $os = new os_cmd;
         $os->setPWD("/root");
     }elseif ($cmd === "cd" || $cmd === "ls" || $cmd === "mdir"|| $cmd ==="mfile" || $cmd === "pwd") {
         $data = json_decode($os->serve($argv, $cmd), true);
         if (isset($data["run"])) {
             $response["run"] = $data["run"];
         }
+        echo "//setPWD:". $os->pwd."\n";
         $response["data"] = $data["data"];
     }elseif ($cmd==="help") {
         $data=array();
@@ -63,3 +70,4 @@
         $response["data"] = htmlentities($cmd) . ": command not found";
     }
     echo "s0(".json_encode($response,128).");";
+$_SESSION["os"]=serialize($os);

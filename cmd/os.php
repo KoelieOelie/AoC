@@ -76,6 +76,7 @@ class os_cmd extends base_cmd
                 $this->cli->addRule('long-c::', "A long flag with a required parameter");
                 break;
             case 'ls':
+                $this->init_cli();
                 $this->params = true;
                 $this->cli->addRule('l', "use a long listing format");
                 //$this->cli->addFlag("long", array("alias" => "-l", "default" => false, "help" => "Use a long listing format"));
