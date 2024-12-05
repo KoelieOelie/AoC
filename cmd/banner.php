@@ -5,7 +5,7 @@ class banner_cmd extends base_cmd
         $this->help = "Display the header";
     }
     function serve() : string {
-        $banner_play = new Playscii(file_path."boot/Banner.psci");
+        $banner_play = new Playscii(file_path. DIRECTORY_SEPARATOR."boot". DIRECTORY_SEPARATOR."Banner.psci");
         return json_encode(array("data" => $banner_play, "run" => "loopLines"), 128);
     }
 }
