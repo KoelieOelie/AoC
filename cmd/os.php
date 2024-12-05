@@ -84,12 +84,6 @@ class os_cmd extends base_cmd
         switch ($cmd_name) {
             case 'pwd':
                 $this->params=false;
-                $this->cli->addRule('a', "A short flag with no parameter");
-                $this->cli->addRule('b:', "A short flag with an optional parameter");
-                $this->cli->addRule('c::', "A short flag with a required parameter");
-                $this->cli->addRule('long-a', "A long flag with no parameter");
-                $this->cli->addRule('long-b:', "A long flag with an optional parameter");
-                $this->cli->addRule('long-c::', "A long flag with a required parameter");
                 break;
             case 'ls':
                 $this->init_cli();
