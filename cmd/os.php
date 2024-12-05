@@ -1,7 +1,4 @@
 <?php
-function Hi() {
-    
-}
 class os_cmd extends base_cmd
 {
     protected $pwd;
@@ -14,38 +11,59 @@ class os_cmd extends base_cmd
     function setPWD($path) : void {
         $this->pwd=$path;
     }
-    /**
-     * TODO: refactor hier onder
-     */
-    function help($i) : string {
-        switch ($i) {
-            case 'ls':
-                return "List directory contents";
-                break;
-            
-            default:
-                return "\x1b3 help text for " . htmlentities($i) . " not found.\x1b0";
-                break;
+    function helpLS(){
+        return "List directory contents";
+    }
+    function helpMKDIR(){
+        return "Create the DIRECTORY(ies), if they do not already exist.";
+    }
+    function helpTOUCH(){
+        return "Create the DIRECTORY(ies), if they do not already exist.";
+    }
+    function help($cmd_name) : string {
+
+        $u=call_user_func('os_cmd::help'. strtoupper($cmd_name));
+        if ($u==null) {
+            $u="\x1b3 help text for " . htmlentities($cmd_name) . " not found.\x1b0";
         }
+        return $u;
     }
     /**
      * TODO: usage for all bulidin func's
      */
-    /*function usageLS()
+    function usageMKDIR()
+    {
+        return "Usage: mkdir [OPTIONS] DIRECTORY...";
+    }
+    function usageLS()
     {
 
-        return json_encode(array("data" => $this->cli->getUsage()));
-    }*/
+        return "Usage: ls [-1AaCxdLHRFplinshrSXvctu] [-w WIDTH] [FILE]...";
+    }
+    function usageTOUCH(){
+        return "Usage: touch [-c] [-d DATE] [-t DATE] [-r FILE] FILE..";
+    }
     
     function runLS() {
-        $flagNames = explode(' ', 'l');
+
+        /*$flagNames = explode(' ', 'l');
 
         $data = "Parsed arguments:\n";
         foreach ($flagNames as $flag) {
             $param = var_export($this->cli->getOption($flag), true);
             $data .= sprintf(' %6s %s', $flag, $param) . "\n";
+        }*/
+        $dir=file_path.DIRECTORY_SEPARATOR.$this->pwd;
+        $files = scandir($dir);
+        $data=[]; 
+        foreach($files as $file)
+        {
+            if(is_dir($dir.$file)){
+                $data[]=[$file,"d"];
+            }else {
+                $data[]=[$file,"f"];
+            }
         }
-
         //$data .= "\nRemaining arguments: " . implode(' ', $args) . "\n";
         return $this->output($data,true);
     }
@@ -63,8 +81,6 @@ class os_cmd extends base_cmd
         //return json_encode(array("data" => $banner_play, "run" => "loopLines"), 128);
         $this->fix_cmd($args, $cmd_name);
         
-        $this->cli->addHead("Usage: " . $cmd_name . " [ options ]\n");
-        $this->cli->addHead($this->help($cmd_name) . "\n");
         switch ($cmd_name) {
             case 'pwd':
                 $this->params=false;
@@ -88,6 +104,12 @@ class os_cmd extends base_cmd
                 break;
         }
         if ($this->params) {
+            $u=call_user_func('os_cmd::usage'. strtoupper($cmd_name));
+            if ($u==null) {
+                $u="Usage: " . $cmd_name . " [ options ]";
+            }
+            $this->cli->addHead("$u\n");
+            $this->cli->addHead($this->help($cmd_name) . "\n");
             try {
                 $this->cli->parse($args);
             } catch (\Throwable $e) {

@@ -42,7 +42,7 @@
         echo "//setPWD:/root\n";
         $os = new os_cmd;
         $os->setPWD("/root");
-    }elseif ($cmd === "cd" || $cmd === "ls" || $cmd === "mdir"|| $cmd ==="mfile" || $cmd === "pwd") {
+    }elseif ($cmd === "cd" || $cmd === "ls" || $cmd === "mkdir"|| $cmd ==="touch" || $cmd === "pwd") {
         $data = json_decode($os->serve($argv, $cmd), true);
         if (isset($data["run"])) {
             $response["run"] = $data["run"];
