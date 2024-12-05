@@ -2,7 +2,7 @@
     require_once 'vendor/autoload.php';
     session_start();
     header("Content-Type: text/javascript");
-    define("file_path","AoC_files/");
+    define("file_path","AoC_files");
     spl_autoload_register(function ($class_name) {
         if (str_contains($class_name,"_cmd")) {
             include "cmd/".str_replace("_cmd","",$class_name) . '.php';
