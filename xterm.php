@@ -25,8 +25,8 @@
         "help"=> "You obviously already know what this does",
         "ls"=> $os->help("ls"),
         "cd" => $os->help("cd"),
-        "mdir" => $os->help("mdir"),
-        "mfile" => $os->help("mfile"),
+        "mkdir" => $os->help("mkdir"),
+        "touch" => $os->help("touch"),
         "pwd" => $os->help("pwd"),
         //"sl"=>new sl_cmd,
         //"cowsay"=>new cowsay
