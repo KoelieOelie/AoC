@@ -47,7 +47,7 @@
         if (isset($data["run"])) {
             $response["run"] = $data["run"];
         }
-        echo "//setPWD:". $os->pwd."\n";
+        //echo "//setPWD:". $os->pwd."\n";
         $response["data"] = $data["data"];
     }elseif ($cmd==="help") {
         $data=array();
