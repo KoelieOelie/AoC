@@ -18,15 +18,15 @@ class os_cmd extends base_cmd
         return "Create the DIRECTORY(ies), if they do not already exist.";
     }
     function helpTOUCH(){
-        return "Create the DIRECTORY(ies), if they do not already exist.";
+        return "Update the last-modified date on the given FILE[s]";
     }
     function help($cmd_name) : string {
-
-        $u=call_user_func('os_cmd::help'. strtoupper($cmd_name));
-        if ($u==null) {
-            $u="\x1b3 help text for " . htmlentities($cmd_name) . " not found.\x1b0";
+        if (method_exists($this,'help' . strtoupper($cmd_name))) {
+            $u = call_user_func('os_cmd::help' . strtoupper($cmd_name));
+        } else {
+            $u = "\x1b3 help text for " . htmlentities($cmd_name) . " not found.\x1b0";
         }
-        return $u;
+        return "$u->";
     }
     /**
      * TODO: usage for all bulidin func's
@@ -43,6 +43,9 @@ class os_cmd extends base_cmd
     function usageTOUCH(){
         return "Usage: touch [-c] [-d DATE] [-t DATE] [-r FILE] FILE..";
     }
+    private function FIX($str) {
+        return str_replace("\/", DIRECTORY_SEPARATOR, $str);
+    }
     
     function runLS() {
 
@@ -53,19 +56,22 @@ class os_cmd extends base_cmd
             $param = var_export($this->cli->getOption($flag), true);
             $data .= sprintf(' %6s %s', $flag, $param) . "\n";
         }*/
-        $dir=file_path.DIRECTORY_SEPARATOR.$this->pwd;
-        $files = scandir($dir);
+        $dir=$this->FIX(file_path . DIRECTORY_SEPARATOR . $this->pwd);
+        //$dir = str_replace(DIRECTORY_SEPARATOR. DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $dir);
+        $files = glob("$dir/*");
         $data=[]; 
+        echo '/*'.print_r($files,true)."*/";
         foreach($files as $file)
         {
-            if(is_dir($dir.$file)){
-                $data[]=[$file,"d"];
+            if(is_dir($file)){
+                $data[]=[str_replace($dir.DIRECTORY_SEPARATOR,"",$file),"d"];
             }else {
-                $data[]=[$file,"f"];
+                $data[]=[str_replace($dir.DIRECTORY_SEPARATOR,"",$file),"f"];
             }
         }
+        //$data[] = [$dir, "?"];
         //$data .= "\nRemaining arguments: " . implode(' ', $args) . "\n";
-        return $this->output($data,true);
+        return $this->FIX($this->output($data,true));
     }
     function runPWD()
     {
