@@ -2,6 +2,20 @@
 class os_cmd extends base_cmd
 {
     protected $pwd;
+    protected $prosses=null;
+    function active_process() : bool {
+        return $this->prosses!==null;
+    }
+    function start_process($ps) {
+        $this->prosses = $ps->init();
+        return $this->prosses->get_banner();
+    }
+
+
+
+
+
+
     public function __construct()
     {
         $this->init_cli();
