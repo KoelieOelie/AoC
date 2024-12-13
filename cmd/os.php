@@ -85,7 +85,8 @@ class os_cmd extends base_cmd
         }
         //$data[] = [$dir, "?"];
         //$data .= "\nRemaining arguments: " . implode(' ', $args) . "\n";
-        return $this->FIX($this->output($data,true));
+        return $this->output($data,true);
+        //return $this->FIX($this->output($data,true));
     }
     function runPWD()
     {
@@ -200,6 +201,7 @@ class os_cmd extends base_cmd
         }        
         
         $retv=call_user_func('os_cmd::run'. strtoupper($cmd_name));
+        echo "/*".base64_encode($retv)."*/\n";
         if ($retv==null) {
             return $this->cmd_fall('os_cmd::run' . strtoupper($cmd_name));
         }
