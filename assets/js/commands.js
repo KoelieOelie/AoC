@@ -53,6 +53,7 @@ function s0(e) {
       liner.setAttribute("data-pwd", "");
       liner.setAttribute("data-cmd_p", ">>> ");
       addLine(e.data, "", 80);
+      window.process = true;
       break;
     case "process_e":
       commander("clear");
@@ -60,6 +61,7 @@ function s0(e) {
       liner.setAttribute("data-pwd", window.ed.pwd);
       liner.setAttribute("data-cmd_p", window.ed.pref);
       console.log(commands);
+      window.process=false;
       
       addLine("WIF", "no-animation cmd", 0);
       break;

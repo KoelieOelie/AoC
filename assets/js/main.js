@@ -6,6 +6,7 @@ var terminal = $("terminal");
 var git = 0;
 var commands = [];
 var pw = false;
+window.process=false;
 
 setTimeout(function () {
   g0("🎅");
@@ -23,7 +24,9 @@ function enterKey(e) {
     document.location.reload(true);
   }
   if (e.keyCode == 13) {
-    commands.push(command.innerText);
+    if (!window.process) {
+      commands.push(command.innerText);
+    }
     git = commands.length;
     addLine(command.innerText, "no-animation cmd", 0);
     commander(command.innerText.toLowerCase());
