@@ -264,6 +264,10 @@ class OptionParser
         $this->_head[] = $message;
     }
 
+    public function updateHead($cell,$message) : void {
+        $this->_head[$cell]=$message;
+    }
+
     /**
      * Add a usage message that will be displayed after the list of flags in the
      * output of {@link getUsage()}.
