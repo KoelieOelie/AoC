@@ -41,7 +41,28 @@ function s0(e) {
   switch (e.run) {
     case "loopLines":
       loopLines(e.data, "", 80);
-      break;  
+      break; 
+    case "process_s" :
+      window.ed = { 
+        usr: liner.getAttribute("data-user"),
+        pwd: liner.getAttribute("data-pwd"),
+        pref: liner.getAttribute("data-cmd_p"),
+      };
+      commander("clear");
+      liner.setAttribute("data-user","");
+      liner.setAttribute("data-pwd", "");
+      liner.setAttribute("data-cmd_p", ">>> ");
+      addLine(e.data, "", 80);
+      break;
+    case "process_e":
+      commander("clear");
+      liner.setAttribute("data-user", window.ed.usr);
+      liner.setAttribute("data-pwd", window.ed.pwd);
+      liner.setAttribute("data-cmd_p", window.ed.pref);
+      console.log(commands);
+      
+      addLine("WIF", "no-animation cmd", 0);
+      break;
     default:
       addLine(e.data, "", 80);
       break;

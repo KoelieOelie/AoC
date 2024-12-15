@@ -10,4 +10,19 @@ class chess_cmd extends base_cmd
     function init() {
         return new self;
     }
+    function get_banner():string {
+        return "WIP";
+    }
+    function exe($e) {
+        switch ($e) {
+            case 'exit':
+                return false;
+                break;
+
+            default:
+                return "?". $e;
+                break;
+        }
+    }
+    
 }

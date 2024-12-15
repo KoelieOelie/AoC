@@ -7,8 +7,23 @@ class os_cmd extends base_cmd
         return $this->prosses!==null;
     }
     function start_process($ps) {
-        $this->prosses = $ps->init();
+        $this->prosses = $ps->init($this->pwd);
         return $this->prosses->get_banner();
+    }
+    function process_serve($argv,$e)
+    {
+        $out= $this->prosses->exe($e,$argv);
+        if ($out===false) {
+            $this->prosses=null;
+            return [
+                "data" => "",
+                "run" => "process_e"
+            ];
+        }
+        return [
+            "data" => $out,
+            "run" => "process"
+        ];
     }
 
 
