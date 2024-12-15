@@ -30,46 +30,48 @@ $cmd_list=array(
     //"sl"=>new sl_cmd,
     //"cowsay"=>new cowsay
 );
-if (!$os->active_process()) {
-    if (strtolower($cmd)==="br") {
-        $response["run"] = "br";
-    }elseif ($cmd=== "init") {
-        $data = json_decode($cmd_list["banner"]->serve($argv, "banner"), true);
-        if (isset($data["run"])) {
-            $response["run"] = $data["run"];
-        }
-        $response["data"] = $data["data"];
-        echo "//setPWD:/root\n";
-        $os = new os_cmd;
-        $os->setPWD("/root");
-    }elseif ($cmd === "cd" || $cmd === "ls" || $cmd === "mkdir"|| $cmd ==="touch" || $cmd === "pwd") {
-        $data = json_decode($os->serve($argv, $cmd), true);
-        if (isset($data["run"])) {
-            $response["run"] = $data["run"];
-        }
-        //echo "//setPWD:". $os->pwd."\n";
-        $response["data"] = $data["data"];
-    }elseif ($cmd==="help") {
-        $data=array();
-        foreach ($cmd_list as $key => $value) {
-            $data[]="\x1b2$key\x1b0\t\t\t".((is_string($value))? $value: $value->__toString());
-        }
-        $response["data"] = $data;
-        $response["run"] = "loopLines";
-    }elseif ($cmd==="man") {
-        $response["data"] = htmlentities($cmd) . ": command not found.";
-    }elseif (isset($cmd_list[$cmd])) {
-        $process=$cmd_list[$cmd];
-        $data= json_decode($process->serve($argv, $cmd),true);
+if ($cmd === "init") {
+    $data = json_decode($cmd_list["banner"]->serve($argv, "banner"), true);
+    if (isset($data["run"])) {
         $response["run"] = $data["run"];
-        if ($response["run"]==="process_s") {
-            $response["data"] = $os->start_process($cmd_list[$cmd]);
-        }
-    }else {
-        $response["data"] = htmlentities($cmd) . ": command not found";
     }
-}else {
-    $response=$os->process_serve($argv, $cmd);
+    $response["data"] = $data["data"];
+    echo "//setPWD:/root\n";
+    $os = new os_cmd;
+    $os->setPWD("/root");
+}else{
+    if (!$os->active_process()) {
+        if (strtolower($cmd) === "br") {
+            $response["run"] = "br";
+        } elseif ($cmd === "cd" || $cmd === "ls" || $cmd === "mkdir" || $cmd === "touch" || $cmd === "pwd") {
+            $data = json_decode($os->serve($argv, $cmd), true);
+            if (isset($data["run"])) {
+                $response["run"] = $data["run"];
+            }
+            //echo "//setPWD:". $os->pwd."\n";
+            $response["data"] = $data["data"];
+        } elseif ($cmd === "help") {
+            $data = array();
+            foreach ($cmd_list as $key => $value) {
+                $data[] = "\x1b2$key\x1b0\t\t\t" . ((is_string($value)) ? $value : $value->__toString());
+            }
+            $response["data"] = $data;
+            $response["run"] = "loopLines";
+        } elseif ($cmd === "man") {
+            $response["data"] = htmlentities($cmd) . ": command not found.";
+        } elseif (isset($cmd_list[$cmd])) {
+            $process = $cmd_list[$cmd];
+            $data = json_decode($process->serve($argv, $cmd), true);
+            $response["run"] = $data["run"];
+            if ($response["run"] === "process_s") {
+                $response["data"] = $os->start_process($cmd_list[$cmd]);
+            }
+        } else {
+            $response["data"] = htmlentities($cmd) . ": command not found";
+        }
+    } else {
+        $response = $os->process_serve($argv, $cmd);
+    }
 }
 $_SESSION["os"]=serialize($os);
 die("s0(".json_encode($response,128).");");

@@ -54,6 +54,7 @@ function addLine(text, style, time) {
     next.className = style;
     next.setAttribute("data-user", liner.getAttribute("data-user"));
     next.setAttribute("data-pwd", liner.getAttribute("data-pwd"));
+    next.setAttribute("data-cmd_p", liner.getAttribute("data-cmd_p"));
     
     before.parentNode.insertBefore(next, before);
 
