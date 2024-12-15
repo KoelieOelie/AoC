@@ -38,11 +38,12 @@ function g0(input) {
 }
 function s0(e) {
   console.log(e);
-  
-  if (e.run === "loopLines") {
-    loopLines(e.data, "", 80);
-  } else {
-    addLine(e.data, "", 80);
-    //term.write(e.data);
+  switch (e.run) {
+    case "loopLines":
+      loopLines(e.data, "", 80);
+      break;  
+    default:
+      addLine(e.data, "", 80);
+      break;
   }
 }
